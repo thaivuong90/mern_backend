@@ -22,11 +22,20 @@ exports.createPost = async (req, res) => {
 exports.updatePost = async (req, res) => {
   try {
     const updatePost = req.body;
-    const post = await PostModel.findOneAndUpdate(
-      { _id: updatePost._id },
-      updatePost,
-      { new: true }
-    );
+    const postId = req.params.postId;
+    const post = await PostModel.findOneAndUpdate({ _id: postId }, updatePost, {
+      new: true,
+    });
+    res.status(200).json(post);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.deletePost = async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const post = await PostModel.deleteOne({ _id: postId });
     res.status(200).json(post);
   } catch (err) {
     console.log(err);
